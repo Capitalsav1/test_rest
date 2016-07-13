@@ -36,7 +36,8 @@ public class MainActivity extends AppCompatActivity {
         btnHit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                new JSONTask().execute("http://jsonparsing.parseapp.com/jsonData/moviesDemoItem.txt");
+                //new JSONTask().execute("http://jsonparsing.parseapp.com/jsonData/moviesDemoItem.txt");
+                new JSONTask().execute("http://jsonparsing.parseapp.com/jsonData/moviesDemoList.txt");
             }
         });
     }
@@ -69,12 +70,17 @@ public class MainActivity extends AppCompatActivity {
                 JSONObject parentObject = new JSONObject(finalJSON);
                 JSONArray parentArray = parentObject.getJSONArray("movies");
 
-                JSONObject finalObject = parentArray.getJSONObject(0);
+                StringBuffer finalBufferedData = new StringBuffer();
+                for(int i = 0; i < parentArray.length(); i++) {
+                    JSONObject finalObject = parentArray.getJSONObject(i);
 
-                String movieName = finalObject.getString("movie");
-                int year = finalObject.getInt("year");
+                    String movieName = finalObject.getString("movie");
+                    int year = finalObject.getInt("year");
 
-                return movieName + " - " + year;
+                    finalBufferedData.append(movieName + " - " + year + "\n");
+                }
+
+                return finalBufferedData.toString();
 
             } catch (MalformedURLException e) {
                 e.printStackTrace();
